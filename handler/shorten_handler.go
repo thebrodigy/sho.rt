@@ -44,3 +44,17 @@ func generateShortCode() string {
 
 	return string(code)
 }
+
+func Redirect(c *gin.Context) {
+	shortCode := c.Param("shortCode")
+	var shortUrl model.ShortUrl
+
+	result := db.DB.Where("short_code = ?", shortCode).First(&shortUrl)
+
+	if result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Invalid short code"})
+		return
+	}
+
+	c.Redirect(http.StatusFound, shortUrl.OriginalUrl)
+}

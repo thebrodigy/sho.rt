@@ -7,4 +7,5 @@ import (
 
 func ApiRoutes(router *gin.Engine) {
 	router.POST("shorten", handler.CreateShortUrl)
+	router.GET("/:shortCode", handler.Redirect)
 }
