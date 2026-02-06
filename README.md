@@ -18,7 +18,7 @@ Uses **Gin** for the HTTP API and **GORM** as the ORM layer.
 -   Go 1.20+
 -   Gin Web Framework
 -   GORM (ORM)
--   PostgreSQL (or SQLite/MySQL)
+-   PostgreSQL
 -   godotenv for configuration
 
 ## Getting Started
@@ -26,7 +26,7 @@ Uses **Gin** for the HTTP API and **GORM** as the ORM layer.
 ### Prerequisites
 
 -   Go 1.20+
--   PostgreSQL (recommended) or SQLite/MySQL
+-   PostgreSQL
 -   Git
 
 ### Setup
@@ -34,8 +34,8 @@ Uses **Gin** for the HTTP API and **GORM** as the ORM layer.
 1.  Clone the repo:
 
 ``` bash
-git clone https://github.com/yourusername/short-app.git
-cd short-app
+git clone https://github.com/thebrodigy/sho.rt.git
+cd sho.rt
 ```
 
 2.  Create a `.env` file in the project root:
