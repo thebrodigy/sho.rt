@@ -159,12 +159,6 @@ type ShortUrl struct {
 
 -   Random alphanumeric string
 -   Combined with `BASE_URL` from `.env`
--   Example:\
-
-```{=html}
-<!-- -->
-```
-    http://sho.rt/GS1OD0 
 
 ------------------------------------------------------------------------
 
