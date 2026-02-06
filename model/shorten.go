@@ -12,6 +12,6 @@ type ShortenResponse struct {
 
 type ShortUrl struct {
 	gorm.Model
-	OriginalUrl string `json:"originalUrl"`
+	OriginalUrl string `json:"originalUrl" gorm:"uniqueIndex"`
 	ShortCode   string `json:"shortCode"`
 }

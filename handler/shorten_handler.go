@@ -3,8 +3,11 @@ package handler
 import (
 	"net/http"
 
+	"errors"
 	"math/rand"
 	"os"
+
+	"gorm.io/gorm"
 
 	"github.com/gin-gonic/gin"
 	"github.com/thebrodigy/sho.rt/db"
@@ -21,17 +24,28 @@ func CreateShortUrl(c *gin.Context) {
 		return
 	}
 
-	var shortenResponse model.ShortenResponse
-
-	shortenResponse.ShortUrl = baseUrl + generateShortCode()
-
 	var shortUrl model.ShortUrl
+	result := db.DB.Where("original_url = ?", shortenRequest.Url).First(&shortUrl)
 
-	shortUrl.OriginalUrl = shortenRequest.Url
-	shortUrl.ShortCode = shortenResponse.ShortUrl
+	if result.Error == nil {
+		c.JSON(http.StatusOK, shortUrl)
+		return
+	} else if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		shortUrl.OriginalUrl = shortenRequest.Url
+		shortUrl.ShortCode = baseUrl + generateShortCode()
 
-	db.DB.Create(&shortUrl)
-	c.JSON(http.StatusCreated, shortUrl)
+		if err := db.DB.Create(&shortUrl).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusCreated, shortUrl)
+		return
+	} else {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+		return
+	}
+
 }
 
 func generateShortCode() string {
